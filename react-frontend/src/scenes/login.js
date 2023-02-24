@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {createUser} from "../callback/callback_user"
+
+import html2canvas from 'html2canvas';
 const localserver = "http://localhost:3001";
 
 const Login = ({ onLogin, onSignup, usernames }) => {
@@ -20,6 +22,7 @@ const Login = ({ onLogin, onSignup, usernames }) => {
       .then(data => {
         console.log("data:"+data);
         localStorage.clear();
+        localStorage.setItem("userId",data._id);
         localStorage.setItem("username",username);
         onLogin(username);
         navigate("/discover");

@@ -5,13 +5,10 @@ var router = express.Router();
  function getImage (db,image_id)  {
     const meme = db.collection('meme');
     
-    return meme.find({_id: new ObjectID(image_id)})
-    .then(
-        
-        result => {
-           //console.log("result: "+JSON.stringify(result));
-            return JSON.stringify(result);
-        }
+    return meme.findOne({_id: new ObjectID(image_id)})
+    .then(  result => {
+        return JSON.stringify(result)
+    }
     )
     .catch((error)=> {
         console.log(error);
@@ -33,9 +30,13 @@ router.get('/get40', (req, res) => {
       let updatedResult;
       if(result.length > 0){
       updatedResult = await Promise.all(result.map(async item => {
-        
+        let myimage;
         const mymeme = await getImage(db, item.meme_id);
-        const myimage = JSON.parse(mymeme)[0].image
+        if ((JSON.parse(mymeme)).hasOwnProperty('image')){
+        myimage = (JSON.parse(mymeme)).image;
+        }else{
+        myimage ="";
+        }
         //console.log("in the get/40"+myimage);
         return { ...item, image: myimage };
         
@@ -55,6 +56,47 @@ router.get('/get40', (req, res) => {
     
 });    
 
+
+
+router.get('/gethistory', (req, res) => {
+    
+    const db = req.db;
+    const counter = req.query.counter;
+    const posts = db.collection('posts');
+    const user_id = req.query.userId;
+    posts.find({user_id:user_id }, { skip: parseInt(counter), limit: 20 })
+    .then(async result => {
+      // go find the right meme data in the meme collection
+     
+      let updatedResult;
+      if(result.length > 0){
+      updatedResult = await Promise.all(result.map(async item => {
+        let myimage;
+        const mymeme = await getImage(db, item.meme_id);
+        console.log("mymeme:",JSON.parse(mymeme));
+        if ((JSON.parse(mymeme)).hasOwnProperty('image')){
+        myimage = (JSON.parse(mymeme)).image;
+        }else{
+        myimage ="";
+        }
+        //console.log("in the get/40"+myimage);
+        return { ...item, image: myimage };
+        
+      }))
+    }else{
+        
+        return {};
+    }
+      
+
+      res.status(202).json(updatedResult);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).send(err);
+    });
+    
+});    
 
 
 /* GET all the posts that the user created */

@@ -21,7 +21,7 @@ const Profile =() =>{
     const [posts, setPosts] = useState([]);
     const [hasMore, setHasMore] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
-    const [counter, setCounter] = useState(0);
+    
 
     const fetchData = async () => {
       console.log("Fetching more data...");
@@ -38,15 +38,12 @@ const Profile =() =>{
         .then( (data) => {
           
             
-            data.forEach(element => {
-              console.log(JSON.stringify(element._id));
-            });
           
           
           if(data.length !==0){
             console.log("the data length indiscover is :"+data.length);
-            setCounter(counter + data.length);
-            console.log("counter legnth is "+counter);
+            
+            
             setPosts(precedent => [...precedent,...data]);
            setIsLoading(false);
          

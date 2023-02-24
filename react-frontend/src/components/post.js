@@ -34,14 +34,14 @@ const PostComponent = ( props) => {
     //need to set like usestate from 456 to the number of likes specific to the post ID
 
     const [isLoading, setIsLoading] = useState(false);
-    const [username, setUsername] = useState("test");
+    const [username, setUsername] = useState();
     const isMounted = useRef(false);
     
 
     
     const fetchUsername = async () => {
         await setIsLoading(true);
-        await fetch(`${localserver}/users` + "?user_id="+props.user_id)
+        await fetch(`${localserver}/users/userId` + "?userId="+props.user_id)
           .then((response) => {
             /*if (!response.ok) {
               throw new Error('Network response was not OK');
@@ -49,8 +49,10 @@ const PostComponent = ( props) => {
             return response.json();
           })
           .then((data) => {
+            console.log("data is "+data)
             if(data.length !==0){
-              setUsername(data.name);
+                console.log("username is ",data.connexion_name)
+              setUsername(data.connexion_name);
               
             setIsLoading(false);
             
@@ -194,7 +196,7 @@ const PostComponent = ( props) => {
                 justifyContent: "left",
             }}>
                 {username}</div>
-            <div className = "postdescr">{props.id}</div>
+            
             <br></br>
             <div
             style={{
@@ -203,7 +205,7 @@ const PostComponent = ( props) => {
                 justifyContent: "center",
             }}>
             <div className="square">
-            <img src={`data:image/jpeg;base64,${props.image}`} alt=""/>
+            <img src={`data:image/jpeg;base64,${props.image}`} alt="" style={{ maxWidth: "800px", maxHeight: "600px" }}/>
             </div>
             </div>
             <br></br>

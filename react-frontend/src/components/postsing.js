@@ -1,7 +1,7 @@
 // Component for one post - include post id
 import React, { useEffect, useState, useRef } from "react";
-import Button from "../components/button";
-import Input from "../components/input";
+import Button from "./button";
+import Input from "./input";
 const localserver = "http://localhost:3001";
 const Like = require ("../callback/callback_like");
 const Comment = require ("../callback/callback_comment");
@@ -150,7 +150,7 @@ const PostComponent = ( props) => {
     const [listCom, setListCom] = useState([]),
         [newinpt, setNewinpt] = useState(""),
         [comCounter, setComCounter] = useState(0),
-        [comExp, setComExp] = useState(false),
+        [comExp, setComExp] = useState(true),
         onCommentButtonClick = () => {
             setComExp(!comExp);
         }
@@ -279,7 +279,7 @@ const PostComponent = ( props) => {
     );
                         }                     
 
-const Post = ({ image,type, variant, className, id, onClick, size, children, user_id, comments,likes,dislikes }) => {
+const PostSing = ({ image,type, variant, className, id, onClick, size, children, user_id, comments,likes,dislikes }) => {
     
     
     return <PostComponent
@@ -300,4 +300,4 @@ const Post = ({ image,type, variant, className, id, onClick, size, children, use
 
 };
 
-export default Post;
+export default PostSing;

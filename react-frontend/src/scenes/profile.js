@@ -27,7 +27,7 @@ const Profile =() =>{
       console.log("Fetching more data...");
       await setIsLoading(true);
       //console.log("counter"+counter);
-      await fetch(`${localserver}/posts/gethistory` + "?userId="+localStorage.get("userId"))
+      await fetch(`${localserver}/posts/gethistory` + "?userId="+localStorage.getItem("userId"))
         .then((response) => {
           if (!response.ok) {
             throw new Error('Network response was not OK');

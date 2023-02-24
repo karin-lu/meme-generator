@@ -62,24 +62,22 @@ export default function Editor() {
   }
 
     const createPost = async (data) => {
+        const body = JSON.stringify({ user_id: localStorage.getItem("userId"), image: data });
         await fetch(localserver+`/posts/create`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body:{
-                user_id:localStorage.get("userId"),
-                image: data
-            }
+            body:body
           })
-          .then ( res => res.json())
+          .then ( res => console.log("yesir",res.json()))
 
     }
 
   return (
     <>
       <h1>Editor</h1>
-      <div className="meme mt-5 mb-5">
+      <div className="meme mt-5 mb-5" ref ={memeRef}>
         <img src={imageUrl} alt="Meme" style={{ width: "25%", height: "25%"}} />
         {text.map((t, index) => <Text key={index} value={t} onChange={(newText) => textChange(index, newText)} />)}
       </div>
@@ -88,13 +86,21 @@ export default function Editor() {
       <Button onClick={nextButton}>Next </Button>
       <Button onClick={clearButton}>Clear</Button>
       <Button variant="success" onClick={(e) => {
+        console.log("welcome to creation");
         const memeDiv = memeRef.current;
-        html2canvas(memeDiv).then(function(canvas) {
+        html2canvas(memeDiv).then((canvas) => {
+            const myDiv = document.getElementById("myDiv");
+            const canvas = html2canvas(myDiv);
+            
             const base64Image = canvas.toDataURL("image/jpeg");
-            // do something with the base64 image string
             const data = base64Image.substring("data:image/jpeg;base64,".length);
-            console.log("image created is ", data);
+            
             createPost(data);
+                
+            
+            
+            // do something with the base64 image string
+            
             
           });
       }

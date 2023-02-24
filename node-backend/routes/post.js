@@ -99,29 +99,6 @@ router.get('/gethistory', (req, res) => {
 });    
 
 
-/* GET all the posts that the user created */
-router.get('/gethistory', (req, res) => {
-    const db = req.db;
-    const images = db.collection('posts');
-    const user_id = req.query.userId;
-    console.log("user id is ");
-    images.find({ user_id:user_id }).then (post => {
-        
-        if (!post) {
-            res.status(404).send('Image not found');
-            return;
-        }
-
-        res.status(202).json(post);
-
-
-        }).catch(err =>{
-            console.log(err);
-            res.status(500).send('Error getting history');
-
-        });
-});
-
 // get a post by id 
 router.get('/:post_id', (req, res) => {
     const db = req.db;
@@ -142,16 +119,50 @@ router.get('/:post_id', (req, res) => {
     });
 });
 
+router.get('/getcomments', (req, res) => {
+    const db = req.db;
+    const images = db.collection('posts');
+    const commentsid = [];
+    const comments =[];
+    
+    const counter = req.query.counter;
+    images.find({ _id: new ObjectID(req.query.post_id) }, { comments: { $slice: [counter, -1] } }).then (post => {
+        
+        if (!post) {
+            res.status(404).send('Image not found');
+            return;
+        }
+        commentsid.append(...post.comments)
+        
+        let results = [];
+        comments.forEach((id) => {
+        fetch(`/comment/${id}`)
+        .then(res => res.json())
+        .then(data => {
+            results.push(data);
+        });
+});
+
+
+        }).catch(err =>{
+            console.log(err);
+            res.status(500).send('Error getting history');
+
+        });
+});
+
+
 
 
 
 // create a post
-    router.post('/create', function(req, res, next) {
+router.post('/create', function(req, res, next) {
         const db = req.db;
         const collection = db.get('posts');
         const memeCollection = db.get('meme');
         const data = req.body;
         const imageData = data.image;
+        console.log("the data is "+imageData)
         //add a document
         memeCollection.insert({
             image:imageData,
@@ -200,37 +211,6 @@ async function performRedirects(comments) {
 
 // get comments from a post id using a counter 
 
-router.get('/getcomments', (req, res) => {
-    const db = req.db;
-    const images = db.collection('posts');
-    const commentsid = [];
-    const comments =[];
-    
-    const counter = req.query.counter;
-    images.find({ _id: new ObjectID(req.query.post_id) }, { comments: { $slice: [counter, -1] } }).then (post => {
-        
-        if (!post) {
-            res.status(404).send('Image not found');
-            return;
-        }
-        commentsid.append(...post.comments)
-        
-        let results = [];
-        comments.forEach((id) => {
-        fetch(`/comment/${id}`)
-        .then(res => res.json())
-        .then(data => {
-            results.push(data);
-        });
-});
-
-
-        }).catch(err =>{
-            console.log(err);
-            res.status(500).send('Error getting history');
-
-        });
-});
 
 
 

@@ -24,6 +24,8 @@ const Login = ({ onLogin, onSignup, usernames }) => {
         localStorage.clear();
         localStorage.setItem("userId",data._id);
         localStorage.setItem("username",username);
+        console.log("username in storage is",localStorage.getItem("username"))
+        console.log("username in storage is",localStorage.getItem("userId"))
         onLogin(username);
         navigate("/discover");
       })

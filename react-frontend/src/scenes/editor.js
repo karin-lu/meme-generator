@@ -90,7 +90,7 @@ export default function Editor() {
         const memeDiv = memeRef.current;
         html2canvas(memeDiv).then((canvas) => {
             const myDiv = document.getElementById("myDiv");
-            const canvas = html2canvas(myDiv);
+            
             
             const base64Image = canvas.toDataURL("image/jpeg");
             const data = base64Image.substring("data:image/jpeg;base64,".length);

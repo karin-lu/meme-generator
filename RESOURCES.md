@@ -22,5 +22,5 @@ SOURCES:
 - https://youtu.be/5s8Ol9uw-yM
 
 
-Futhermore, at the very beginning of this project we created a Figma document to envision the style and all the potential features what we originally wanted to implement.
+P.S.: At the very beginning of this project we created a Figma document to envision the style and all the potential features what we originally wanted to implement.
 https://www.figma.com/file/Dl99vv5YBSwoluOsSbNeMq/Meme-generator?node-id=0%3A1&t=Kj5h7qwHHF7SwBMH-1 

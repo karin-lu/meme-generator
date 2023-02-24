@@ -2,6 +2,24 @@ var express = require('express');
 var router = express.Router();
 
 /* GET users listing. */
+
+router.get('/userId', function(req, res, next) {
+  const db = req.db;
+  const users = db.get('users');
+  users.find({_id: req.query.userId}) // return all user properties, except the basic auth token
+      .then((docs) => 
+      {
+        if(docs[0]){
+      res.json(docs[0])
+        }else(
+          res.status(500).send()
+        )
+      } )
+      .catch((e) => res.status(500).send())
+});
+
+
+
 router.get('/', function(req, res, next) {
   const db = req.db;
   const users = db.get('users');

@@ -4,6 +4,9 @@ import Text from "../components/text";
 import { getAllMemes } from '../api/memes';
 import Button from "../components/button";
 import { exportComponentAsJPEG } from 'react-component-export-image';
+import html2canvas from 'html2canvas';
+const localserver = "http://localhost:3001";
+
 
 // Editor component to create new memes
 export default function Editor() {
@@ -84,7 +87,18 @@ export default function Editor() {
       <Button onClick={backButton}>Back</Button>
       <Button onClick={nextButton}>Next </Button>
       <Button onClick={clearButton}>Clear</Button>
-      <Button variant="success" onClick={(e) => exportComponentAsJPEG(memeRef)}> Save </Button>  
+      <Button variant="success" onClick={(e) => {
+        const memeDiv = memeRef.current;
+        html2canvas(memeDiv).then(function(canvas) {
+            const base64Image = canvas.toDataURL("image/jpeg");
+            // do something with the base64 image string
+            const data = base64Image.substring("data:image/jpeg;base64,".length);
+            console.log("image created is ", data);
+            createPost(data);
+            
+          });
+      }
+    }> Save </Button>  
     </>
   );
 };

@@ -1,7 +1,7 @@
 // Component for one post - include post id
 import React, { useEffect, useState, useRef } from "react";
-import Button from "../components/button";
-import Input from "../components/input";
+import Button from "./button";
+import Input from "./input";
 const localserver = "http://localhost:3001";
 const Like = require ("../callback/callback_like");
 const Comment = require ("../callback/callback_comment");
@@ -33,14 +33,14 @@ const PostComponent = ( props) => {
     //need to set like usestate from 456 to the number of likes specific to the post ID
 
     const [isLoading, setIsLoading] = useState(false);
-    const [username, setUsername] = useState();
+    const [username, setUsername] = useState("test");
     const isMounted = useRef(false);
     
 
     
     const fetchUsername = async () => {
         await setIsLoading(true);
-        await fetch(`${localserver}/users/userId` + "?userId="+props.user_id)
+        await fetch(`${localserver}/users` + "?user_id="+props.user_id)
           .then((response) => {
             /*if (!response.ok) {
               throw new Error('Network response was not OK');
@@ -48,10 +48,8 @@ const PostComponent = ( props) => {
             return response.json();
           })
           .then((data) => {
-            console.log("data is "+data)
             if(data.length !==0){
-                console.log("username is ",data.connexion_name)
-              setUsername(data.connexion_name);
+              setUsername(data.name);
               
             setIsLoading(false);
             
@@ -152,7 +150,7 @@ const PostComponent = ( props) => {
     const [listCom, setListCom] = useState([]),
         [newinpt, setNewinpt] = useState(""),
         [comCounter, setComCounter] = useState(0),
-        [comExp, setComExp] = useState(false),
+        [comExp, setComExp] = useState(true),
         onCommentButtonClick = () => {
             setComExp(!comExp);
         }
@@ -195,7 +193,7 @@ const PostComponent = ( props) => {
                 justifyContent: "left",
             }}>
                 {username}</div>
-            
+            <div className = "postdescr">{props.id}</div>
             <br></br>
             <div
             style={{
@@ -204,7 +202,7 @@ const PostComponent = ( props) => {
                 justifyContent: "center",
             }}>
             <div className="square">
-            <img src={`data:image/jpeg;base64,${props.image}`} alt="" style={{ maxWidth: "800px", maxHeight: "600px" }}/>
+            <img src={`data:image/jpeg;base64,${props.image}`} alt=""/>
             </div>
             </div>
             <br></br>
@@ -281,7 +279,7 @@ const PostComponent = ( props) => {
     );
                         }                     
 
-const Post = ({ image,type, variant, className, id, onClick, size, children, user_id, comments,likes,dislikes }) => {
+const PostSing = ({ image,type, variant, className, id, onClick, size, children, user_id, comments,likes,dislikes }) => {
     
     
     return <PostComponent
@@ -302,4 +300,4 @@ const Post = ({ image,type, variant, className, id, onClick, size, children, use
 
 };
 
-export default Post;
+export default PostSing;
